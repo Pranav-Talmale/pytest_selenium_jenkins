@@ -1,0 +1,33 @@
+import pytest
+import time
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.keys import Keys
+
+@pytest.fixture
+def driver():
+    # Set path to Brave browser
+    brave_path = "/usr/share/applications/brave-browser.desktop"
+
+    # Set up ChromeOptions for Brave
+    options = Options()
+    options.binary_location = brave_path
+
+    # Initialize the driver
+    driver = webdriver.Chrome(options=options)
+    driver.maximize_window()
+    yield driver
+    driver.quit()
+
+def test_google_search(driver):
+    driver.get("https://www.google.com/")
+    time.sleep(3)
+
+    search_box = driver.find_element("name", "q")
+    search_box.send_keys("Pranav Talmale")
+    time.sleep(2)
+    search_box.send_keys(Keys.ENTER)
+    time.sleep(3)
+
+    # Assertion: Page should contain the keyword
+    assert "Pranav Talmale" in driver.page_source
