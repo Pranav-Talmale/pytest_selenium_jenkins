@@ -12,6 +12,7 @@ def driver():
     # Set up ChromeOptions for Brave
     options = Options()
     options.binary_location = brave_path
+    options.add_argument("--headless")
 
     # Initialize the driver
     driver = webdriver.Chrome(options=options)
